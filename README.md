@@ -1,1 +1,1 @@
-<h2>An API to recive data pushes from <a href="https://www.goannaag.com.au/">Goanna Ag</a> remote sensing devices.</h2>
+<h3>An API to recive data pushes from <a href="https://www.goannaag.com.au/">Goanna Ag</a> remote sensing devices.</h3>
