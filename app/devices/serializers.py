@@ -1,11 +1,20 @@
 from rest_framework import serializers
-from core.models import Devicetag
+from core.models import Device, Location
 
 
-class DevicetagSerializer(serializers.ModelSerializer):
-    """Serializer for tag objects"""
+class DeviceSerializer(serializers.ModelSerializer):
+    """Serializer for Device objects"""
 
     class Meta:
-        model = Devicetag
-        fields = ('id', 'name')
+        model = Device
+        fields = ('id', 'device_type')
+        read_only_fields = ('id',)
+
+
+class LocationSerializer(serializers.ModelSerializer):
+    """Serializer for Location objects"""
+
+    class Meta:
+        model = Location
+        fields = ('id', 'loc_id', 'loc_name')
         read_only_fields = ('id',)

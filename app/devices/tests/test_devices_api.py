@@ -5,11 +5,11 @@ from django.test import TestCase
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from core.models import Devicetag
+from core.models import Device
 
-from devices.serializers import DevicetagSerializer
+from devices.serializers import DeviceSerializer
 
-DEVICETAGS_URL = reverse('devices:devicetag-list')
+DEVICE_URL = reverse('devices:device-list')
 
 
 class PublicTagApiTests(TestCase):
@@ -20,7 +20,7 @@ class PublicTagApiTests(TestCase):
 
     def test_login_required(self):
         """Test that login is required for retrieving tags"""
-        res = self.client.get(DEVICETAGS_URL)
+        res = self.client.get(DEVICE_URL)
 
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
@@ -38,12 +38,12 @@ class PrivateTagApiTests(TestCase):
 
     def test_retrieve_device_tags(self):
         """Test retrieving device tags"""
-        Devicetag.objects.create(user=self.user, name='Weather Station')
-        Devicetag.objects.create(user=self.user, name='Soil Moisture Probe')
+        Device.objects.create(user=self.user, device_type='Weather Station')
+        Device.objects.create(user=self.user, device_type='Soil Moisture Probe')
 
-        res = self.client.get(DEVICETAGS_URL)
-        tags = Devicetag.objects.all().order_by('-name')
-        serializer = DevicetagSerializer(tags, many=True)
+        res = self.client.get(DEVICE_URL)
+        tags = Device.objects.all().order_by('-device_type')
+        serializer = DeviceSerializer(tags, many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
 
@@ -53,30 +53,30 @@ class PrivateTagApiTests(TestCase):
             'other@iamdodge.us',
             'PassTest456'
         )
-        Devicetag.objects.create(user=user2, name='Rain Guage')
-        tag = Devicetag.objects.create(user=self.user, name='Tank Monitor')
+        Device.objects.create(user=user2, device_type='Rain Guage')
+        tag = Device.objects.create(user=self.user, device_type='Tank Monitor')
 
-        res = self.client.get(DEVICETAGS_URL)
+        res = self.client.get(DEVICE_URL)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(len(res.data), 1)
-        self.assertEqual(res.data[0]['name'], tag.name)
+        self.assertEqual(res.data[0]['device_type'], tag.device_type)
 
     def test_create_tag_successful(self):
         """Test creating a new tag"""
         payload = {
-            'name': 'Soil Moisture Probe',
+            'device_type': 'Soil Moisture Probe',
         }
-        self.client.post(DEVICETAGS_URL, payload)
-        exists = Devicetag.objects.filter(
+        self.client.post(DEVICE_URL, payload)
+        exists = Device.objects.filter(
             user=self.user,
-            name=payload['name']
+            device_type=payload['device_type']
         ).exists()
         self.assertTrue(exists)
 
     def test_create_invalid_tag(self):
         """Test creating an invalid tag fails"""
         payload = {
-            'name': '',
+            'device_type': '',
         }
-        res = self.client.post(DEVICETAGS_URL, payload)
+        res = self.client.post(DEVICE_URL, payload)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)

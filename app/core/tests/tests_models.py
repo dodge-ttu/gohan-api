@@ -53,11 +53,20 @@ class ModelTests(TestCase):
         self.assertTrue(user.is_superuser)
         self.assertTrue(user.is_staff)
 
-    def test_device_tag_string(self):
-        """Test the string representation"""
-        devicetag = models.Devicetag.objects.create(
+    def test_device_string(self):
+        """Test the device string representation"""
+        device = models.Device.objects.create(
             user=sample_user(),
-            name='Vegan'
+            device_type='Soil Moisture Probe'
         )
 
-        self.assertEqual(str(devicetag), devicetag.name)
+        self.assertEqual(str(device), device.device_type)
+
+    def test_location_string(self):
+        """Test the location string representation"""
+        location = models.Location.objects.create(
+            user=sample_user(),
+            loc_id='23111',
+            loc_name='Dodge low water',
+        )
+        self.assertEqual(str(location), location.loc_name)

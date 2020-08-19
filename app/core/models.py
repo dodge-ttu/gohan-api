@@ -38,13 +38,26 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
 
 
-class Devicetag(models.Model):
+class Device(models.Model):
     """Device tag to be used for a device"""
-    name = models.CharField(max_length=255)
+    device_type = models.CharField(max_length=255)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
 
     def __str__(self):
-        return self.name
+        return self.device_type
+
+
+class Location(models.Model):
+    """Location for a device"""
+    loc_id = models.IntegerField()
+    loc_name = models.CharField(max_length=255)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
+
+    def __str__(self):
+        return self.loc_name

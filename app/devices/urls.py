@@ -5,7 +5,8 @@ from devices import views
 
 
 router = DefaultRouter()
-router.register('devicetags', views.DevicetagViewSet)
+router.register('device', views.DeviceViewSet)
+router.register('locations', views.LocationViewSet)
 
 app_name = 'devices'
 
