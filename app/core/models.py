@@ -38,16 +38,29 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
 
 
-class Device(models.Model):
-    """Device tag to be used for a device"""
+class Devicetype(models.Model):
+    """Device type to be used for a device"""
     device_type = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.device_type
+
+
+class Device(models.Model):
+    """Device model to be used for each specific device"""
+    device_id = models.IntegerField()
+    device_type = models.ForeignKey(
+        'DeviceType',
+        on_delete=models.SET_NULL,
+        null=True
+    )
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
 
     def __str__(self):
-        return self.device_type
+        return str(self.device_id)
 
 
 class Location(models.Model):
@@ -61,3 +74,150 @@ class Location(models.Model):
 
     def __str__(self):
         return self.loc_name
+
+
+class Wxstatreading(models.Model):
+    """Model fo weather station reading"""
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    loc = models.ForeignKey(
+        'Location',
+        on_delete=models.SET_NULL,
+        null=True)
+    device = models.ForeignKey(
+        'Device',
+        on_delete=models.SET_NULL,
+        null=True)
+    datetime = models.DateTimeField(null=True)
+    air_temp = models.FloatField(null=True)
+    humidity = models.FloatField(null=True)
+    wind_avg_spd_kph = models.FloatField(null=True)
+    wind_avg_direct = models.FloatField(null=True)
+    wind_std_dev = models.IntegerField(null=True)
+    rain_mm = models.FloatField(null=True)
+    soil_temp = models.FloatField(null=True)
+    barometric = models.FloatField(null=True)
+    evaporation = models.FloatField(null=True)
+    air_temp_10_m = models.FloatField(null=True)
+    air_temp_inversion = models.CharField(max_length=20, null=True)
+    wind_direction_1 = models.CharField(max_length=20, null=True)
+    wind_direction_2 = models.CharField(max_length=20, null=True)
+    wind_dir_1_percent = models.IntegerField(null=True)
+    wind_dir_2_percent = models.IntegerField(null=True)
+    wind_speed_max = models.FloatField(null=True)
+    wind_speed_min = models.FloatField(null=True)
+    wind_speed_avg = models.FloatField(null=True)
+
+    def __str__(self):
+        return f"{self.device}__{self.datetime}"
+
+
+class Soilprobereading(models.Model):
+    """Model for soil probe reading"""
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    loc = models.ForeignKey(
+        'location',
+        on_delete=models.SET_NULL,
+        null=True
+    )
+    device = models.ForeignKey(
+        'device',
+        on_delete=models.SET_NULL,
+        null=True
+    )
+    datetime = models.DateTimeField(null=True)
+    depth1 = models.FloatField(null=True)
+    depth2 = models.FloatField(null=True)
+    depth3 = models.FloatField(null=True)
+    depth4 = models.FloatField(null=True)
+    depth5 = models.FloatField(null=True)
+    depth6 = models.FloatField(null=True)
+    depth7 = models.FloatField(null=True)
+    depth8 = models.FloatField(null=True)
+    depth9 = models.FloatField(null=True)
+    depth10 = models.FloatField(null=True)
+    depth11 = models.FloatField(null=True)
+    depth12 = models.FloatField(null=True)
+    depth13 = models.FloatField(null=True)
+    depth14 = models.FloatField(null=True)
+    depth15 = models.FloatField(null=True)
+    depth16 = models.FloatField(null=True)
+    soiltotal = models.FloatField(null=True)
+    rainfall = models.FloatField(null=True)
+    irrigation_due_actual = models.FloatField(null=True)
+    irrigation_due_default = models.FloatField(null=True)
+    dailyuse = models.FloatField(null=True)
+    temp = models.FloatField(null=True)
+    humidity = models.FloatField(null=True)
+    depth1temp = models.FloatField(null=True)
+    depth2temp = models.FloatField(null=True)
+    depth3temp = models.FloatField(null=True)
+    depth4temp = models.FloatField(null=True)
+    depth5temp = models.FloatField(null=True)
+    depth6temp = models.FloatField(null=True)
+    depth7temp = models.FloatField(null=True)
+    depth8temp = models.FloatField(null=True)
+    depth9temp = models.FloatField(null=True)
+    depth10temp = models.FloatField(null=True)
+    depth11temp = models.FloatField(null=True)
+    depth12temp = models.FloatField(null=True)
+    depth13temp = models.FloatField(null=True)
+    depth14temp = models.FloatField(null=True)
+    depth15temp = models.FloatField(null=True)
+    depth16temp = models.FloatField(null=True)
+
+    def __str__(self):
+        return f"{self.device}__{self.datetime}"
+
+
+class Raingaugereading(models.Model):
+    """Model for rain gauge reading"""
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    loc = models.ForeignKey(
+        'location',
+        on_delete=models.SET_NULL,
+        null=True
+    )
+    device = models.ForeignKey(
+        'device',
+        on_delete=models.SET_NULL,
+        null=True
+    )
+    datetime = models.DateTimeField(null=True)
+    rain = models.FloatField(null=True)
+    accum_rain = models.FloatField(null=True)
+
+    def __str__(self):
+        return f"{self.device}__{self.datetime}"
+
+
+class Tankmonitorreading(models.Model):
+    """Model for tank monitor reading"""
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
+    loc = models.ForeignKey(
+        'location',
+        on_delete=models.SET_NULL,
+        null=True
+    )
+    device = models.ForeignKey(
+        'device',
+        on_delete=models.SET_NULL,
+        null=True
+    )
+    datetime = models.DateTimeField(null=True)
+    water_height_mm = models.FloatField(null=True)
+    rainfall_mm = models.FloatField(null=True)
+
+    def __str__(self):
+        return f"{self.device}__{self.datetime}"

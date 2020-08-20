@@ -1,2 +1,2 @@
 [![Build Status](https://travis-ci.org/dodge-ttu/gohan-api.svg?branch=master)](https://travis-ci.org/dodge-ttu/gohan-api)
-<h3>An API to recive data pushes from <a href="https://www.goannaag.com.au/">Goanna Ag</a> remote sensing devices.</h3>
+<h3>An API to recive data pushes from <a href="https://www.goannaag.com.au/">Goanna Ag</a> servers allowing for local storage of sensor data.</h3>
