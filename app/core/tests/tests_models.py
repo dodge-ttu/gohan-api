@@ -176,7 +176,7 @@ class ModelTests(TestCase):
         )
         string_match = f"{soilprobereading.device}__{soilprobereading.datetime}"
         self.assertEqual(str(soilprobereading), string_match)
-        
+
     def test_raingaugereading_string(self):
         """Test rain guage model returns string"""
         user = sample_user()
