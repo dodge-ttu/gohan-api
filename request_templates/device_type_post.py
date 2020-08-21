@@ -7,7 +7,7 @@ API_KEY = os.environ['TESTAUTH']
 headers = {'Authorization': f'Token {API_KEY}'}
 
 payload = {
-    'device_type':'Canopy Temp Sensor',
+    'device_type': 'Canopy Temp Sensor',
 }
 
 r = requests.post(API_URL, headers=headers, json=payload)
