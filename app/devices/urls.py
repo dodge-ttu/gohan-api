@@ -8,6 +8,9 @@ router.register('device', views.DeviceViewSet)
 router.register('devicetype', views.DevicetypeViewSet)
 router.register('locations', views.LocationViewSet)
 router.register('wxstatreadings', views.WxstatreadingViewSet)
+router.register('soilprobereadings', views.SoilprobereadingViewSet)
+router.register('raingaugereadings', views.RaingaugereadingViewSet)
+router.register('tankmonitorreading', views.TankmonitorreadingViewSet)
 
 app_name = 'devices'
 
