@@ -105,16 +105,10 @@ class RaingaugereadingViewSet(BaseSensorAttrViewSet):
 
     def get_queryset(self):
         """Get object from current authenticated user and location"""
-        loc = self.request.query_params.get('loc', None)
+        loc = self.request.query_params.get('loc_id', None)
         if loc is not None:
-            return self.queryset.filter(
-                user=self.request.user,
-                loc=loc,
-            )
-        else:
-            return self.queryset.filter(
-                user=self.request.user
-            )
+            self.queryset = self.queryset.filter(LocationID=loc)
+        return self.queryset
 
 
 class TankmonitorreadingViewSet(BaseSensorAttrViewSet):

@@ -26,6 +26,7 @@ class UserAdmin(BaseUserAdmin):
 
 admin.site.register(models.User, UserAdmin)
 admin.site.register(models.Devicetype)
+admin.site.register(models.Device)
 admin.site.register(models.Location)
 admin.site.register(models.Wxstatreading)
 admin.site.register(models.Soilprobereading)

@@ -48,7 +48,7 @@ class Devicetype(models.Model):
 
 class Device(models.Model):
     """Device model to be used for each specific device"""
-    device_id = models.IntegerField()
+    device_id = models.IntegerField(primary_key=True)
     device_type = models.ForeignKey(
         'DeviceType',
         on_delete=models.SET_NULL,
@@ -65,7 +65,7 @@ class Device(models.Model):
 
 class Location(models.Model):
     """Location for a device"""
-    loc_id = models.IntegerField()
+    loc_id = models.IntegerField(primary_key=True)
     loc_name = models.CharField(max_length=255)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -73,7 +73,7 @@ class Location(models.Model):
     )
 
     def __str__(self):
-        return self.loc_name
+        return str(self.loc_id)
 
 
 class Wxstatreading(models.Model):
@@ -175,28 +175,50 @@ class Soilprobereading(models.Model):
         return f"{self.device}__{self.datetime}"
 
 
+# class Raingaugereading(models.Model):
+#     """Model for rain gauge reading"""
+#     user = models.ForeignKey(
+#         settings.AUTH_USER_MODEL,
+#         on_delete=models.CASCADE
+#     )
+#     loc = models.ForeignKey(
+#         'location',
+#         on_delete=models.SET_NULL,
+#         null=True
+#     )
+#     device = models.ForeignKey(
+#         'device',
+#         on_delete=models.SET_NULL,
+#         null=True
+#     )
+#     datetime = models.DateTimeField(null=True)
+#     rain = models.FloatField(null=True)
+#     accum_rain = models.FloatField(null=True)
+#
+#     def __str__(self):
+#         return f"{self.device}__{self.datetime}"
+
+
 class Raingaugereading(models.Model):
     """Model for rain gauge reading"""
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
-    )
-    loc = models.ForeignKey(
+    LocationID = models.ForeignKey(
         'location',
         on_delete=models.SET_NULL,
         null=True
     )
-    device = models.ForeignKey(
+    LocationDescription = models.CharField(max_length=255, null=True)
+    SystemType = models.CharField(max_length=255, null=True)
+    deviceID = models.ForeignKey(
         'device',
         on_delete=models.SET_NULL,
         null=True
     )
-    datetime = models.DateTimeField(null=True)
     rain = models.FloatField(null=True)
-    accum_rain = models.FloatField(null=True)
+    datetime = models.DateTimeField(null=True)
+    AccumulatedRain = models.FloatField(null=True)
 
     def __str__(self):
-        return f"{self.device}__{self.datetime}"
+        return f"{self.deviceID}__{self.datetime}"
 
 
 class Tankmonitorreading(models.Model):

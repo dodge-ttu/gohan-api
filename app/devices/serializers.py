@@ -1,7 +1,9 @@
 from rest_framework import serializers
+from rest_framework.fields import CurrentUserDefault
 from core.models import Device, Devicetype, Location, Wxstatreading, \
     Soilprobereading, Raingaugereading, Tankmonitorreading
 
+import json
 
 class DeviceSerializer(serializers.ModelSerializer):
     """Serializer for Device objects"""
@@ -117,18 +119,68 @@ class SoilprobereadingSerializers(serializers.ModelSerializer):
 
 class RaingaugereadingSerializer(serializers.ModelSerializer):
     """Serializer for rain gauge objects"""
+    Devices = serializers.JSONField(allow_null=True)
 
     class Meta:
         model = Raingaugereading
         fields = (
-            'user',
-            'loc',
-            'device',
-            'datetime',
+            'LocationID',
+            'LocationDescription',
+            'SystemType',
+            'deviceID',
             'rain',
-            'accum_rain',
+            'datetime',
+            'AccumulatedRain',
+            'Devices',
         )
-        read_only_fields = ('id', 'datetime')
+        read_only_fields = ('id',)
+
+
+    def create(self, validated_data):
+        """Custom create method for the Goanna Ag data structure"""
+        loc_obj = validated_data.get('LocationID', None)
+        system_type = validated_data.get('SystemType', None)
+        devices = validated_data.get('Devices', None)
+        if devices is not None:
+            rain_gauge_data = devices.get('RainGauges', None)
+            device_obj = rain_gauge_data.get('deviceID', None)
+            device_obj = Device.objects.get(pk=device_obj)
+            device_data = rain_gauge_data.get('deviceDataArray', None)
+
+            print(device_obj, device_data)
+
+            if device_data is not None:
+                rgrs = []
+                for reading in device_data:
+                    datetime = reading['datetime']
+                    rain = reading['rain']
+                    accum_rain = reading['AccumulatedRain']
+                    rgr = Raingaugereading.objects.create(
+                        LocationID=loc_obj,
+                        LocationDescription=loc_obj.loc_name,
+                        SystemType=system_type,
+                        deviceID=device_obj,
+                        rain=rain,
+                        datetime=datetime,
+                        AccumulatedRain=accum_rain
+                    )
+                    rgrs.append(rgr)
+                return rgrs
+        else:
+            device = validated_data.get('deviceID', None)
+            datetime = validated_data.get('datetime', None)
+            rain = validated_data.get('rain', None)
+            accum_rain = validated_data.get('AccumulatedRain', None)
+            rgr = Raingaugereading.objects.create(
+                LocationID=loc_obj,
+                LocationDescription=loc_obj.loc_name,
+                SystemType=system_type,
+                deviceID=device,
+                rain=rain,
+                datetime=datetime,
+                AccumulatedRain=accum_rain
+            )
+            return rgr
 
 
 class TankmonitorreadingSerializer(serializers.ModelSerializer):

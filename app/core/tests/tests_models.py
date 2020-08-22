@@ -194,14 +194,15 @@ class ModelTests(TestCase):
             user=user
         )
         raingaugereading = models.Raingaugereading.objects.create(
-            user=user,
-            loc=aloc,
-            device=adevice,
+            loc_id=aloc,
+            loc_name=aloc.loc_name,
+            device_id=adevice,
+            system_type='Metric',
             datetime="2020-06-01T21:10:24.000Z",
             rain=0.2,
             accum_rain=45.6,
         )
-        string_match = f"{raingaugereading.device}__{raingaugereading.datetime}"
+        string_match = f"{raingaugereading.device_id}__{raingaugereading.datetime}"
         self.assertEqual(str(raingaugereading), string_match)
 
     def test_tankmonitorreading_string(self):
