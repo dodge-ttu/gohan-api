@@ -19,7 +19,7 @@ class BaseSensorAttrViewSet(viewsets.GenericViewSet,
 
     def perform_create(self, serializer):
         """Create a new item"""
-        serializer.save(user=self.request.user)
+        serializer.save()
 
     def perform_destroy(self, instance):
         """Delete an item"""
@@ -35,6 +35,10 @@ class DeviceViewSet(BaseSensorAttrViewSet):
         """Return objects for the current authenticated user"""
         return self.queryset.filter(user=self.request.user).order_by('-device_id')
 
+    def perform_create(self, serializer):
+        """Create a new item"""
+        serializer.save(user=self.request.user)
+
 
 class DevicetypeViewSet(BaseSensorAttrViewSet):
     """Manage devices in the database"""
@@ -45,10 +49,6 @@ class DevicetypeViewSet(BaseSensorAttrViewSet):
         """Return objects for the current authenticated user"""
         return self.queryset.order_by('-device_type')
 
-    def perform_create(self, serializer):
-        """Create a new item"""
-        return serializer.save()
-
 
 class LocationViewSet(BaseSensorAttrViewSet):
     """Manage locations in the database"""
@@ -58,6 +58,10 @@ class LocationViewSet(BaseSensorAttrViewSet):
     def get_queryset(self):
         """Return objects for the current authenticated user"""
         return self.queryset.filter(user=self.request.user).order_by('loc_id')
+
+    def perform_create(self, serializer):
+        """Create a new item"""
+        serializer.save(user=self.request.user)
 
 
 class WxstatreadingViewSet(BaseSensorAttrViewSet):

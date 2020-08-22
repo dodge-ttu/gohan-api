@@ -65,7 +65,7 @@ class Device(models.Model):
 
 class Location(models.Model):
     """Location for a device"""
-    loc_id = models.IntegerField(primary_key=True)
+    loc_id = models.IntegerField(primary_key=True, editable=True)
     loc_name = models.CharField(max_length=255)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -173,30 +173,6 @@ class Soilprobereading(models.Model):
 
     def __str__(self):
         return f"{self.device}__{self.datetime}"
-
-
-# class Raingaugereading(models.Model):
-#     """Model for rain gauge reading"""
-#     user = models.ForeignKey(
-#         settings.AUTH_USER_MODEL,
-#         on_delete=models.CASCADE
-#     )
-#     loc = models.ForeignKey(
-#         'location',
-#         on_delete=models.SET_NULL,
-#         null=True
-#     )
-#     device = models.ForeignKey(
-#         'device',
-#         on_delete=models.SET_NULL,
-#         null=True
-#     )
-#     datetime = models.DateTimeField(null=True)
-#     rain = models.FloatField(null=True)
-#     accum_rain = models.FloatField(null=True)
-#
-#     def __str__(self):
-#         return f"{self.device}__{self.datetime}"
 
 
 class Raingaugereading(models.Model):

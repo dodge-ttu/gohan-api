@@ -1,17 +1,14 @@
 from rest_framework import serializers
-from rest_framework.fields import CurrentUserDefault
 from core.models import Device, Devicetype, Location, Wxstatreading, \
     Soilprobereading, Raingaugereading, Tankmonitorreading
 
-import json
 
 class DeviceSerializer(serializers.ModelSerializer):
     """Serializer for Device objects"""
 
     class Meta:
         model = Device
-        fields = ('id', 'device_id')
-        read_only_fields = ('id',)
+        fields = ('device_id',)
 
 
 class DevicetypeSerializer(serializers.ModelSerializer):
@@ -28,8 +25,7 @@ class LocationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Location
-        fields = ('id', 'loc_id', 'loc_name')
-        read_only_fields = ('id',)
+        fields = ('loc_id', 'loc_name')
 
 
 class WxstatreadingSerializer(serializers.ModelSerializer):
@@ -134,7 +130,6 @@ class RaingaugereadingSerializer(serializers.ModelSerializer):
             'Devices',
         )
         read_only_fields = ('id',)
-
 
     def create(self, validated_data):
         """Custom create method for the Goanna Ag data structure"""

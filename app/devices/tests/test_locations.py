@@ -73,13 +73,13 @@ class PrivateLocationsApiTest(TestCase):
     def test_create_location_successful(self):
         """Test create a new location"""
         payload = {
+            'user': self.user,
             'loc_id': 12345,
             'loc_name': 'Smith Farm',
         }
         self.client.post(LOCATION_URL, payload)
         exists = Location.objects.filter(
-            user=self.user,
-            loc_name=payload['loc_name']
+            user=self.user
         ).exists()
         self.assertTrue(exists)
 

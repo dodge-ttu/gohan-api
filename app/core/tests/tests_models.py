@@ -65,10 +65,10 @@ class ModelTests(TestCase):
         """Test the location string representation"""
         location = models.Location.objects.create(
             user=sample_user(),
-            loc_id='23111',
-            loc_name='Dodge low water',
+            loc_id=23111,
+            loc_name='Johnson Farm',
         )
-        self.assertEqual(str(location), location.loc_name)
+        self.assertEqual(str(location), str(location.loc_id))
 
     def test_wxstatreading_string(self):
         """Test creation of weather station reading"""
@@ -194,15 +194,15 @@ class ModelTests(TestCase):
             user=user
         )
         raingaugereading = models.Raingaugereading.objects.create(
-            loc_id=aloc,
-            loc_name=aloc.loc_name,
-            device_id=adevice,
-            system_type='Metric',
+            LocationID=aloc,
+            LocationDescription=aloc.loc_name,
+            deviceID=adevice,
+            SystemType='Metric',
             datetime="2020-06-01T21:10:24.000Z",
             rain=0.2,
-            accum_rain=45.6,
+            AccumulatedRain=45.6,
         )
-        string_match = f"{raingaugereading.device_id}__{raingaugereading.datetime}"
+        string_match = f"{raingaugereading.deviceID}__{raingaugereading.datetime}"
         self.assertEqual(str(raingaugereading), string_match)
 
     def test_tankmonitorreading_string(self):
