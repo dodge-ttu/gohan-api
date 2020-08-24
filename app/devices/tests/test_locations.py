@@ -19,7 +19,7 @@ class PublicLocationsApiTests(TestCase):
         self.client = APIClient()
 
     def test_login_reqiured(self):
-        """Test that the login is required to access the endpoint"""
+        """Test auth token is required to access the endpoint"""
         res = self.client.get(LOCATION_URL)
 
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
@@ -57,13 +57,17 @@ class PrivateLocationsApiTest(TestCase):
             'other@iamdodge.us',
             'PassTest321'
         )
-        Location.objects.create(user=user2,
-                                loc_id=12345,
-                                loc_name='Dodge low water')
+        Location.objects.create(
+            user=user2,
+            loc_id=12345,
+            loc_name='Dodge low water'
+        )
 
-        location = Location.objects.create(user=self.user,
-                                           loc_id=1223,
-                                           loc_name='Johnson Farm')
+        location = Location.objects.create(
+            user=self.user,
+            loc_id=1223,
+            loc_name='Johnson Farm'
+        )
 
         res = self.client.get(LOCATION_URL)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
