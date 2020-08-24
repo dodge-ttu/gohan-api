@@ -1,7 +1,6 @@
 import requests
 import os
 import json
-import io
 
 API_URL = 'http://127.0.0.1:8000/api/devices/raingaugereadings/'
 API_KEY = os.environ['TESTAUTH']

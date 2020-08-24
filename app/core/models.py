@@ -78,18 +78,18 @@ class Location(models.Model):
 
 class Wxstatreading(models.Model):
     """Model fo weather station reading"""
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
+    LocationID = models.ForeignKey(
+        'location',
+        on_delete=models.SET_NULL,
+        null=True
     )
-    loc = models.ForeignKey(
-        'Location',
+    LocationDescription = models.CharField(max_length=255, null=True)
+    SystemType = models.CharField(max_length=255, null=True)
+    deviceID = models.ForeignKey(
+        'device',
         on_delete=models.SET_NULL,
-        null=True)
-    device = models.ForeignKey(
-        'Device',
-        on_delete=models.SET_NULL,
-        null=True)
+        null=True
+    )
     datetime = models.DateTimeField(null=True)
     air_temp = models.FloatField(null=True)
     humidity = models.FloatField(null=True)
@@ -98,6 +98,7 @@ class Wxstatreading(models.Model):
     wind_std_dev = models.IntegerField(null=True)
     rain_mm = models.FloatField(null=True)
     soil_temp = models.FloatField(null=True)
+    solar_rad = models.FloatField(null=True)
     barometric = models.FloatField(null=True)
     evaporation = models.FloatField(null=True)
     air_temp_10_m = models.FloatField(null=True)
@@ -116,16 +117,14 @@ class Wxstatreading(models.Model):
 
 class Soilprobereading(models.Model):
     """Model for soil probe reading"""
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
-    )
-    loc = models.ForeignKey(
+    LocationID = models.ForeignKey(
         'location',
         on_delete=models.SET_NULL,
         null=True
     )
-    device = models.ForeignKey(
+    LocationDescription = models.CharField(max_length=255, null=True)
+    SystemType = models.CharField(max_length=255, null=True)
+    deviceID = models.ForeignKey(
         'device',
         on_delete=models.SET_NULL,
         null=True
@@ -172,7 +171,7 @@ class Soilprobereading(models.Model):
     depth16temp = models.FloatField(null=True)
 
     def __str__(self):
-        return f"{self.device}__{self.datetime}"
+        return f"{self.deviceID}__{self.datetime}"
 
 
 class Raingaugereading(models.Model):
@@ -199,23 +198,21 @@ class Raingaugereading(models.Model):
 
 class Tankmonitorreading(models.Model):
     """Model for tank monitor reading"""
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-    )
-    loc = models.ForeignKey(
+    LocationID = models.ForeignKey(
         'location',
         on_delete=models.SET_NULL,
         null=True
     )
-    device = models.ForeignKey(
+    LocationDescription = models.CharField(max_length=255, null=True)
+    SystemType = models.CharField(max_length=255, null=True)
+    deviceID = models.ForeignKey(
         'device',
         on_delete=models.SET_NULL,
         null=True
     )
     datetime = models.DateTimeField(null=True)
-    water_height_mm = models.FloatField(null=True)
-    rainfall_mm = models.FloatField(null=True)
+    WaterHeightMillimeters = models.FloatField(null=True)
+    RainFallMillimeters = models.FloatField(null=True)
 
     def __str__(self):
-        return f"{self.device}__{self.datetime}"
+        return f"{self.deviceID}__{self.datetime}"

@@ -130,9 +130,10 @@ class ModelTests(TestCase):
             user=user
         )
         soilprobereading = models.Soilprobereading.objects.create(
-            user=user,
-            loc=aloc,
-            device=adevice,
+            LocationID=aloc,
+            LocationDescription=aloc.loc_name,
+            deviceID=adevice,
+            SystemType='Metric',
             datetime="2020-06-01T21:10:24.000Z",
             depth1=32.4,
             depth2=32.4,
@@ -174,7 +175,7 @@ class ModelTests(TestCase):
             depth15temp=18,
             depth16temp=68
         )
-        string_match = f"{soilprobereading.device}__{soilprobereading.datetime}"
+        string_match = f"{soilprobereading.deviceID}__{soilprobereading.datetime}"
         self.assertEqual(str(soilprobereading), string_match)
 
     def test_raingaugereading_string(self):
@@ -222,12 +223,13 @@ class ModelTests(TestCase):
             user=user
         )
         tankmonreading = models.Tankmonitorreading.objects.create(
-            user=user,
-            loc=aloc,
-            device=adevice,
+            LocationID=aloc,
+            LocationDescription=aloc.loc_name,
+            SystemType='Metric',
+            deviceID=adevice,
             datetime="2020-06-01T21:10:24.000Z",
-            water_height_mm=34.2,
-            rainfall_mm=13.0,
+            WaterHeightMillimeters=34.2,
+            RainFallMillimeters=13.0,
         )
-        string_match = f"{tankmonreading.device}__{tankmonreading.datetime}"
+        string_match = f"{tankmonreading.deviceID}__{tankmonreading.datetime}"
         self.assertEqual(str(tankmonreading), string_match)

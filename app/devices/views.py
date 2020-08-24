@@ -70,17 +70,13 @@ class WxstatreadingViewSet(BaseSensorAttrViewSet):
     serializer_class = serializers.WxstatreadingSerializer
 
     def get_queryset(self):
-        """Get objects for current authenticated user and location"""
-        loc = self.request.query_params.get('loc', None)
+        """Get object from current authenticated user and location"""
+        loc = self.request.query_params.get('loc_id', None)
         if loc is not None:
-            return self.queryset.filter(
-                user=self.request.user,
-                loc=loc
-            )
+            self.queryset = self.queryset.filter(LocationID=loc)
+            return self.queryset
         else:
-            return self.queryset.filter(
-                user=self.request.user
-            )
+            return self.queryset
 
 
 class SoilprobereadingViewSet(BaseSensorAttrViewSet):
@@ -89,17 +85,13 @@ class SoilprobereadingViewSet(BaseSensorAttrViewSet):
     serializer_class = serializers.SoilprobereadingSerializers
 
     def get_queryset(self):
-        """Get objects from current authenticated user and location"""
-        loc = self.request.query_params.get('loc', None)
+        """Get object from current authenticated user and location"""
+        loc = self.request.query_params.get('loc_id', None)
         if loc is not None:
-            return self.queryset.filter(
-                user=self.request.user,
-                loc=loc,
-            )
+            self.queryset = self.queryset.filter(LocationID=loc)
+            return self.queryset
         else:
-            return self.queryset.filter(
-                user=self.request.user
-            )
+            return self.queryset
 
 
 class RaingaugereadingViewSet(BaseSensorAttrViewSet):
@@ -112,7 +104,9 @@ class RaingaugereadingViewSet(BaseSensorAttrViewSet):
         loc = self.request.query_params.get('loc_id', None)
         if loc is not None:
             self.queryset = self.queryset.filter(LocationID=loc)
-        return self.queryset
+            return self.queryset
+        else:
+            return self.queryset
 
 
 class TankmonitorreadingViewSet(BaseSensorAttrViewSet):
@@ -121,14 +115,10 @@ class TankmonitorreadingViewSet(BaseSensorAttrViewSet):
     serializer_class = serializers.TankmonitorreadingSerializer
 
     def get_queryset(self):
-        """Get objects from current authenticated user and location"""
-        loc = self.request.query_params.get('loc', None)
+        """Get object from current authenticated user and location"""
+        loc = self.request.query_params.get('loc_id', None)
         if loc is not None:
-            return self.queryset.filter(
-                user=self.request.user,
-                loc=loc,
-            )
+            self.queryset = self.queryset.filter(LocationID=loc)
+            return self.queryset
         else:
-            return self.queryset.filter(
-                user=self.request.user
-            )
+            return self.queryset

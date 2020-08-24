@@ -13,7 +13,7 @@ LOCATION_URL = reverse('devices:location-list')
 
 
 class PublicLocationsApiTests(TestCase):
-    """Test the publicly available ingredients API"""
+    """Test the publicly available locations API"""
 
     def setUp(self):
         self.client = APIClient()
