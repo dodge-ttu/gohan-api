@@ -39,7 +39,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Devicetype(models.Model):
-    """Device type to be used for a device"""
+    """Device type model to be used for a device"""
     device_type = models.CharField(max_length=255)
 
     def __str__(self):
