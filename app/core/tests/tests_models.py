@@ -87,9 +87,10 @@ class ModelTests(TestCase):
             user=user
         )
         wxstatreading = models.Wxstatreading.objects.create(
-            user=user,
-            loc=aloc,
-            device=adevice,
+            LocationID=aloc,
+            LocationDescription=aloc.loc_name,
+            deviceID=adevice,
+            SystemType='Metric',
             datetime="2020-06-01T21:10:24.000Z",
             air_temp=13.75,
             humidity=44.2,
@@ -110,7 +111,7 @@ class ModelTests(TestCase):
             wind_speed_min=8.10,
             wind_speed_avg=9.61,
         )
-        string_match = f"{wxstatreading.device}__{wxstatreading.datetime}"
+        string_match = f"{wxstatreading.deviceID}__{wxstatreading.datetime}"
         self.assertEqual(str(wxstatreading), string_match)
 
     def test_soilprobereading_string(self):

@@ -112,7 +112,7 @@ class Wxstatreading(models.Model):
     wind_speed_avg = models.FloatField(null=True)
 
     def __str__(self):
-        return f"{self.device}__{self.datetime}"
+        return f"{self.deviceID}__{self.datetime}"
 
 
 class Soilprobereading(models.Model):
